@@ -34,15 +34,15 @@ def start_game(request):
     board = new_game.board
     return HttpResponseRedirect(reverse('game:game', args = (new_id)))
 
-def make_move(request):
+def make_move(request, pk):
+    game = get_object_or_404(TicTacToe, pk=pk)
     if request.method == "POST":
         form = InputForm(request.POST)
         if form.is_valid():
-            game_id = form.id
             move = form.move
-            game = get_object_or_404(TicTacToe, pk = game_id)
+            game.make_move(move)
 
-            return HttpResponseRedirect(reverse('game', args = (game_id,)))
+            return HttpResponseRedirect(reverse('game:game', args = (pk,)))
 
 
 

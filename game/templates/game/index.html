@@ -5,7 +5,7 @@
 <div class = "Overview">
     <p> Start a new game of Tic Tac Toe. Funzos!</p>
 </div>
-<form action = "{% url 'game:start_game' %}" method="post">
+<form action = "{% url 'game:start_game' id %}" method="post">
     {% csrf_token %}
     <input type = "submit" value = "new">
 </form> 

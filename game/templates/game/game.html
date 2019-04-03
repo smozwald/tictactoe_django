@@ -1,6 +1,19 @@
 {% extends 'game/base.html' %}
 
 {% block content %}
-<p> test</p>
+
+{% for val in board %}
+    {% if val == 0 %}
+    <p> You can play here, at index {{ forloop.counter0 }} </p>
+    <form action = "{% url 'game:make_move' id %}">
+        {% csrf_token %}
+        <input type = "submit" name = "move" value = {{ forloop.counter0 }}>
+    </form>
+
+    {% else %}
+    <p> You can't player here, at index {{ forloop.counter0 }}</p>
+    {% endif %}
+
+{% endfor %}
 
 {% endblock %}
