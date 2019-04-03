@@ -1,13 +1,48 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-
+from django.views.generic.base import View
+from django.template import loader
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from .models import TicTacToe
 
-def index(request):
+class IndexView(View):
     """Show some summary stats about history of the naughts and crosses games, with a big ass new game button."""
 
-def game(request, pk):
+    template = "game/index.html"
+
+    def get(self, request):
+        return render(request, self.template)
+
+class GameView(View):
     """Play a game, will reload and update based on player moves.
     Request will include a form, which will either have a valid move to add, or nothing (indicating a game has only just started)."""
+    template = "game/game.html"
+
+    def get(self, request, pk):
+        game = get_object_or_404(TicTacToe, pk = pk)
+        board = game.board
+        return render(request, self.template, {'id':pk, 'board':board})
+
+def start_game(request):
+    """Initialize a new game, and return it."""
+    new_game = TicTacToe()
+    new_game.save()
+    new_id = new_game.id
+    board = new_game.board
+    return HttpResponseRedirect(reverse('game:game', args = (new_id)))
+
+def make_move(request):
+    if request.method == "POST":
+        form = InputForm(request.POST)
+        if form.is_valid():
+            game_id = form.id
+            move = form.move
+            game = get_object_or_404(TicTacToe, pk = game_id)
+
+            return HttpResponseRedirect(reverse('game', args = (game_id,)))
+
+
+

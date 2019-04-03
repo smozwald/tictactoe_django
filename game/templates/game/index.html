@@ -1,0 +1,13 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+
+<div class = "Overview">
+    <p> Start a new game of Tic Tac Toe. Funzos!</p>
+</div>
+<form action = "{% url 'game:start_game' %}" method="post">
+    {% csrf_token %}
+    <input type = "submit" value = "new">
+</form> 
+
+{% endblock %}
