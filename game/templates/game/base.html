@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Tic-Tac-Toe</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'game/style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'game/style.css' %}" />
     </head>
     <body>
         <div class="header">
@@ -13,6 +13,10 @@
                 <div class="col-md-8">
                 {% block content %}
                 {% endblock %}
+                <form action = "{% url 'game:start_game' %}" method="post">
+                    {% csrf_token %}
+                    <input type = "submit" value = "Click Here to Start a New Game of Tic-Tac-Toe!">
+                </form> 
                 </div>
             </div>
         </div>

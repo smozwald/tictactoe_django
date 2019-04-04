@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div>
+<div id = "game-status">
 {% if status == "N" %}
     {% if player == 1 %}
         <p>It is player 1s turn (O's).</p>
@@ -18,20 +18,28 @@
 {% endif %}
 </div>
 
+<div class = "board">
 {% for val in board %}
     {% if val == 0 %}
-    <p> You can play here, at index {{ forloop.counter0 }} </p>
-    <p> {{ val }}</p>
+    <span class = "square playable" id = "square-{{ val }}">
     <form action = "{% url 'game:make_move' id %}" method="POST">
         {% csrf_token %}
         <input name="move" value="{{ forloop.counter0 }}" type="hidden">
         <button type="submit">{{ next_player }}</button>
     </form>
+    </span>
 
     {% else %}
-    <p> You can't player here, at index {{ forloop.counter0 }} {{ val }}</p>
+    <span class = "square unplayable" id = "square-{{ val }}">
+        {% if val == 1 %}
+            <p>O</p>
+        {% elif val == 2 %}
+            <p>X</p>
+        {% endif %}
     {% endif %}
+    </span>
 
 {% endfor %}
+</div>
 
 {% endblock %}
